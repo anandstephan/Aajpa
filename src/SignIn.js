@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState} from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -62,6 +62,29 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export function SignIn({ loggedIn, logout, login }) {
+
+  //Use State for email and password 
+  const [email,setEmail] = useState('')
+  const [password,setPassword] = useState('')
+
+  const onSubmitHandler = async(e) =>{
+    e.preventDefault()
+    let key = email.length==10 ? 'num':'email'
+    const response = await fetch('http://54.198.229.134:8080/Ajapa_webservice-0.0.1-SNAPSHOT/login',{
+      method:"POST",
+      headers: {
+        'content-Type': 'application/json'
+      },
+      body:JSON.stringify({ 
+        key:email,
+        password:password,
+      })
+    })
+
+    const data = await response.text()
+    console.log('API Response:', data);
+    localStorage.setItem("token",data)
+  };
   const classes = useStyles();
 
   return (
@@ -85,16 +108,20 @@ export function SignIn({ loggedIn, logout, login }) {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <form className={classes.form} noValidate>
+            <form className={classes.form} noValidate
+             onSubmit={onSubmitHandler}
+            >
               <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Email Address or Phone Number"
                 name="email"
-                autoComplete="email"
+                value={email} 
+                onChange={e =>setEmail(e.target.value)}
+                // autoComplete="email"
                 autoFocus
               />
               <TextField
@@ -106,6 +133,8 @@ export function SignIn({ loggedIn, logout, login }) {
                 label="Password"
                 type="password"
                 id="password"
+                value={password} 
+               onChange={e =>setPassword(e.target.value)}
                 autoComplete="current-password"
               />
               <FormControlLabel
@@ -116,8 +145,8 @@ export function SignIn({ loggedIn, logout, login }) {
                 fullWidth
                 variant="contained"
                 color="primary"
-                className={classes.submit}
-                onClick={login}
+                type="submit"
+                margin="normal"
               >
                 Sign In
               </Button>
