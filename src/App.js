@@ -13,7 +13,7 @@ import Trips from "./Trips/Trips";
 import Driver from "./People/Driver";
 import Components from "./Components/Components";
 import Settings from "./Settings/Settings";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+//import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { configureStore } from "@reduxjs/toolkit";
 import peopleReducer from "./ReduxTable/peopleSlice";
@@ -28,7 +28,7 @@ export default function App() {
   const [currentTheme, setCurrentTheme] = useTheme();
   return (
     <>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      {/* <MuiPickersUtilsProvider utils={DateFnsUtils}> */}
         <ThemeProvider theme={currentTheme}>
           <Provider store={store}>
             <DataProvider>
@@ -77,7 +77,7 @@ export default function App() {
             </DataProvider>
           </Provider>
         </ThemeProvider>
-      </MuiPickersUtilsProvider>
+      {/* </MuiPickersUtilsProvider> */}
     </>
   );
 }
