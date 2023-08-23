@@ -66,21 +66,33 @@ export function SignIn({ loggedIn, logout, login }) {
   //Use State for email and password 
   const [email,setEmail] = useState('')
   const [password,setPassword] = useState('')
+  const [contactType, setContactType] = useState('');
 
+  //ON-SUBMIT
   const onSubmitHandler = async(e) =>{
     e.preventDefault()
-    let key = email.length==10 ? 'num':'email'
+    if (/^\d{10}$/.test(email)) {
+      setContactType('phone');
+    } 
+    else if (/^\S+@\S+\.\S+$/.test(email)) {
+      setContactType('email');
+    } 
+    else {
+      setContactType('');
+    }
+    // let key = email.length==10 ? 'num':'email'
+    // console.log(key)
     const response = await fetch('http://54.198.229.134:8080/Ajapa_webservice-0.0.1-SNAPSHOT/login',{
       method:"POST",
       headers: {
         'content-Type': 'application/json'
       },
       body:JSON.stringify({ 
-        key:email,
+        email:email,
         password:password,
       })
     })
-
+    
     const data = await response.text()
     console.log('API Response:', data);
     localStorage.setItem("token",data)
@@ -117,7 +129,8 @@ export function SignIn({ loggedIn, logout, login }) {
                 required
                 fullWidth
                 id="email"
-                label="Email Address or Phone Number"
+                label={contactType === 'phone' ? 'Phone Number' : 'Email Address'}
+                type="text"
                 name="email"
                 value={email} 
                 onChange={e =>setEmail(e.target.value)}
