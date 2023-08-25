@@ -67,6 +67,32 @@ export function SignIn({ loggedIn, logout, login }) {
   const [email,setEmail] = useState('')
   const [password,setPassword] = useState('')
   const [contactType, setContactType] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  //VAlidate-Email
+    const validateEmail = (value) => {
+     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+    if (!value) {
+      setEmailError('Email or phone number is required');
+    } else if (!emailRegex.test(value) && !phoneRegex.test(value)) {
+      setEmailError('Enter a valid email or phone number');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  //Validate-Password 
+  const validatePassword = (passwordValue) => {
+    if (!passwordValue) {
+      setPasswordError('Password is required');
+    } else if (passwordValue.length < 3) {           //We can change 
+      setPasswordError('Password should be of minimum 4 characters length');
+    } else {
+      setPasswordError('');
+    }
+  };
 
   //ON-SUBMIT
   const onSubmitHandler = async(e) =>{
@@ -93,9 +119,17 @@ export function SignIn({ loggedIn, logout, login }) {
       })
     })
     
-    const data = await response.text()
-    console.log('API Response:', data);
-    localStorage.setItem("token",data)
+        if (!emailError && !passwordError) {
+      // Perform signup logic here using email and password
+          const data = await response.text()
+          console.log('API Response:', data);
+          localStorage.setItem("token",data)
+          console.log('Signup successful:', email, password);
+    }
+  // };
+    // const data = await response.text()
+    // console.log('API Response:', data);
+    // localStorage.setItem("token",data)
   };
   const classes = useStyles();
 
@@ -134,8 +168,11 @@ export function SignIn({ loggedIn, logout, login }) {
                 name="email"
                 value={email} 
                 onChange={e =>setEmail(e.target.value)}
-                // autoComplete="email"
+                autoComplete="email"
                 autoFocus
+                onBlur={() => validateEmail(email)}
+                error={Boolean(emailError)}
+                helperText={emailError}
               />
               <TextField
                 variant="outlined"
@@ -148,6 +185,9 @@ export function SignIn({ loggedIn, logout, login }) {
                 id="password"
                 value={password} 
                onChange={e =>setPassword(e.target.value)}
+                onBlur={() => validatePassword(password)}
+               error={Boolean(passwordError)}
+               helperText={passwordError}
                 autoComplete="current-password"
               />
               <FormControlLabel
@@ -184,4 +224,4 @@ export function SignIn({ loggedIn, logout, login }) {
       </Grid>
     </Grid>
   );
-}
+  }
