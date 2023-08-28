@@ -128,11 +128,11 @@ export function Home() {
                 <Grid item>
                   <Button
                     component={RouterLink}
-                    to={"/login"}
+                    to={"/Signup"}
                     variant="contained"
                     color="primary"
                   >
-                    Sign In
+                    Sign Up  
                   </Button>
                 </Grid>
               </Grid>

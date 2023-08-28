@@ -19,6 +19,7 @@ import Icon from "@material-ui/core/Icon";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "@material-ui/core/Badge";
 import MailIcon from "@material-ui/icons/Mail";
+import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import PalettePicker from "../Theme/PalettePicker";
 export const drawerWidth = 240;
 
@@ -84,7 +85,8 @@ function ResponsiveDrawer(props) {
       <List>
         {[
           { text: "home", icon: "home" },
-          { text: "login", icon: "lock" },
+          { text: "SignIn"},
+          { text: "Signup", icon: "lock" },
           { text: "profile", icon: "person" },
           { text: "dashboard", icon: "dashboard" },
           { text: "people", icon: "people" },
