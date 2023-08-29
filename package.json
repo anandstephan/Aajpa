@@ -2,7 +2,6 @@
   "name": "material-dashboards",
   "version": "0.1.2",
   "private": true,
-  "proxy":"http://54.198.229.134:8080",
   "dependencies": {
     "@date-io/date-fns": "1.x",
     "@material-ui/core": "^4.9.0",

@@ -1,3 +1,3 @@
 export const headers = {
-    'Content-Type':"application/json"
+    'content-type':"application/json; charset=UTF-8"
 }

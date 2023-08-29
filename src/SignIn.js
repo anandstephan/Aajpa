@@ -11,7 +11,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import FormLabel from '@material-ui/core/FormLabel';
-
+import { login } from "./api/Api";
 
 
 function Copyright() {
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn({ loggedIn, logout, login }) {
+export default function SignIn({ loggedIn, logout }) {
 
   //Use State 
   const [email,setEmail] = useState('')
@@ -108,20 +108,8 @@ export default function SignIn({ loggedIn, logout, login }) {
         setContactType('');
      }
 
-    // const response = await fetch('http://54.198.229.134:8080/Ajapa_webservice-0.0.1-SNAPSHOT/login',{
-    //   method:"POST",
-    //   headers: {
-    //     'content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(formData),
-
-    // })
-    
-    //       const data = await response.text()
-    //       console.log('API Response:', data);
-    //       localStorage.setItem("token",data)
-    // signup(formData)  //SignIn details 
-    }
+     login(email,password)
+}
     const classes = useStyles();
  
     return (

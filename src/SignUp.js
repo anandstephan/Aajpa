@@ -148,18 +148,6 @@ export default function SignUp({ loggedIn, logout, login }) {
   const onSubmitHandler = async(e) =>{
     e.preventDefault()
 
-    // const response = await fetch('http://54.198.229.134:8080/Ajapa_webservice-0.0.1-SNAPSHOT/login',{
-    //   method:"POST",
-    //   headers: {
-    //     'content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(formData),
-
-    // })
-    
-    //       const data = await response.text()
-    //       console.log('API Response:', data);
-    //       localStorage.setItem("token",data)
     signup(formData)
     }
     const classes = useStyles();

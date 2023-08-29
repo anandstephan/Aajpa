@@ -134,7 +134,7 @@ export default function Driver({ id }) {
                   startIcon={<EditIcon />}
                   onClick={open}
                 >
-                  Edit
+                  Update Your Profile 
                 </Button>
               )}
             />

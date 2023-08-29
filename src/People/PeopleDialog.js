@@ -15,6 +15,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import { useState } from "react";
+import { updateProfile } from "../api/Api";
 
 
 export default function PeopleDialog({ data, render, onSave }) {
@@ -29,23 +30,16 @@ export default function PeopleDialog({ data, render, onSave }) {
   
   //USESTATE
   const [formData, setFormData] = useState({
-    full_name: "",
-    gender: "",
     age: "",
-    dob: "", 
     mobile_num: "",
     whatsapp_num: "",
-    email: "",
-    password: "",
     blood_grp: "",
     diksha_dt: "",
     occupation: "",
     user_pic: "",
     qualification: "",
     address_line: "",
-    country: "",
     state: "",
-    city: "",
     pincode: ""
   });
 
@@ -56,20 +50,8 @@ export default function PeopleDialog({ data, render, onSave }) {
     const newErrors = {};
 
     // Validate each field and set errors if applicable
-    if (!formData.full_name) {
-      newErrors.full_name = "Full name is required";
-    }
-
-    if (!formData.gender) {
-      newErrors.gender = "Gender is required";
-    }
-
     if (!formData.age) {
       newErrors.age = "Age is required";
-    }
-
-    if (!formData.dob) {
-      newErrors.dob = "Date of birth is required";
     }
 
     const phoneRegex = /^\d{10}$/;
@@ -81,21 +63,6 @@ export default function PeopleDialog({ data, render, onSave }) {
       newErrors.whatsapp_num= "WhatsApp number is required";
     } else if (!phoneRegex.test(formData.whatsapp_num)) {
       newErrors.whatsapp_num = "Enter a valid 10-digit mobile number";
-    }
-
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.email)) {
-        newErrors.email = "Enter a valid email";
-      }
-    }
-
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password should be of minimum 8 characters length";
     }
 
     if (!formData.blood_grp) {
@@ -118,16 +85,8 @@ export default function PeopleDialog({ data, render, onSave }) {
       newErrors.address_line = "Enter proper Address";
     }
 
-    if (!formData.country) {
-      newErrors.country = "Enter Country";
-    }
-
     if (!formData.state) {
       newErrors.state = "Enter state";
-    }
-
-    if (!formData.city) {
-      newErrors.city = "Enter City";
     }
 
     const pin = /^\d{6}$/;
@@ -162,16 +121,7 @@ export default function PeopleDialog({ data, render, onSave }) {
     
     try {
       if (validateFields()) {
-      const response = await fetch('http://54.198.229.134:8080/Ajapa_webservice-0.0.1-SNAPSHOT/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.text();
-      console.log('API Response:', data);
+        updateProfile(formData)
     }}
     catch (error) {
       console.error('Error:', error);
@@ -201,43 +151,8 @@ export default function PeopleDialog({ data, render, onSave }) {
         <DialogContent>
           
   <form onSubmit={handleSubmit}>
-    <div>
-    <FormLabel>Full Name</FormLabel>
-        <TextField 
-           variant="outlined"
-            autoFocus
-            margin="dense"
-            name="full_name"
-            label="Name"
-            fullWidth
-            value={formData.full_name}
-            onChange={handleInputChange}
-            required
-            onBlur={handleBlur}
-            error={Boolean(errors.full_name)}
-            helperText={errors.full_name}
-          /> 
 
-          </div>
-          <br/><br/>
-    <FormControl >
-        <FormLabel>Gender</FormLabel>
-          <RadioGroup
-              name="gender"
-              value={formData.gender}
-              onChange={handleInputChange}
-              required
-              margin="normal"
-              onBlur={handleBlur}
-              error={Boolean(errors.gender)}
-              helperText={errors.gender}
-          >
-            <FormControlLabel value="female" control={<Radio />} label="Female" />
-            <FormControlLabel value="male" control={<Radio />} label="Male" />
-            <FormControlLabel value="other" control={<Radio />} label="Other" />
-         </RadioGroup>
-     </FormControl> <br/>
-
+       <FormLabel>Enter Age</FormLabel><br/>
           <TextField 
                variant="outlined"
                label="Age"
@@ -251,21 +166,6 @@ export default function PeopleDialog({ data, render, onSave }) {
                error={Boolean(errors.age)}
               helperText={errors.age}
           />  <br/><br/>
-
-            <FormLabel>Enter DOB</FormLabel>
-      <TextField
-        type="date"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        name="dob"
-        value={formData.dob}
-        onChange={handleInputChange}
-        required
-        onBlur={handleBlur}
-        error={Boolean(errors.dob)}
-        helperText={errors.dob}
-      /><br/>
 
               <FormLabel>Mobile Number</FormLabel>
                   <TextField
@@ -300,38 +200,6 @@ export default function PeopleDialog({ data, render, onSave }) {
                      error={Boolean(errors.whatsapp_num)}
                      helperText={errors.whatsapp_num}
                    />
-
-            <FormLabel>Enter Email Address</FormLabel>
-                <TextField
-                    label="Email"
-                    type="email"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    onBlur={handleBlur}
-                    error={Boolean(errors.email)}
-                    helperText={errors.email}
-                 />
-
-                 <FormLabel>Enter Password</FormLabel>
-                 <TextField
-                    label="Password"
-                    type="password"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    required
-                    onBlur={handleBlur}
-                    error={Boolean(errors.password)}
-                    helperText={errors.password}
-                 />
 
 <FormLabel>Enter Blood Group</FormLabel>
      <TextField
@@ -423,22 +291,6 @@ export default function PeopleDialog({ data, render, onSave }) {
         helperText={errors.address_line}
       />
 
-<FormLabel>Enter Country</FormLabel>
-      <TextField
-        label="Country"
-        type="text"
-        name="country"
-        value={formData.country}
-        onChange={handleInputChange}
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        required
-        onBlur={handleBlur}
-        error={Boolean(errors.country)}
-        helperText={errors.country}
-      />
-
 <FormLabel>Enter State</FormLabel>
       <TextField
         label="State"
@@ -453,22 +305,6 @@ export default function PeopleDialog({ data, render, onSave }) {
         onBlur={handleBlur}
         error={Boolean(errors.state)}
         helperText={errors.state}
-      />
-
-<FormLabel>Enter City</FormLabel>
-      <TextField
-        label="City"
-        type="text"
-        name="city"
-        value={formData.city}
-        onChange={handleInputChange}
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        required
-        onBlur={handleBlur}
-        error={Boolean(errors.city)}
-        helperText={errors.city}
       />
 
 <FormLabel>Enter PinCode</FormLabel>
