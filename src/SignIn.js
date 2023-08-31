@@ -116,7 +116,7 @@ export default function SignIn({ loggedIn, logout }) {
      }
 
      try {    
-      console.log("hikyu") 
+      // console.log("hikyu") 
       login(email,password)
      }
      catch (error) {

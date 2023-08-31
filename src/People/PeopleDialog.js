@@ -16,6 +16,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import { useState } from "react";
 import { updateProfile, userPic } from "../api/Api";
+import { format } from "date-fns";
 
 
 export default function PeopleDialog({ data, render, onSave }) {
@@ -108,8 +109,6 @@ export default function PeopleDialog({ data, render, onSave }) {
   //Handling Onchange
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    console.log(name,value,)
-
     setFormData((prevData) => ({
       ...prevData,
       [name]: name === 'file' ?event.target.files[0]: value,
@@ -122,8 +121,7 @@ export default function PeopleDialog({ data, render, onSave }) {
     const form = new FormData();
     Object.keys(formData).forEach(data => form.append(data,formData[data]))
     try {
-        // updateProfile(formData)    
-        userPic(formData)    
+        userPic(form)
       }
     catch (error) {
       console.error('Error:', error);
@@ -152,7 +150,7 @@ export default function PeopleDialog({ data, render, onSave }) {
         </DialogTitle>
         <DialogContent>
           
-  <form onSubmit={handleSubmit}>
+  <form onSubmit={handleSubmit} encType="multipart/form-data">
 
        <FormLabel>Enter Age</FormLabel><br/>
           <TextField 

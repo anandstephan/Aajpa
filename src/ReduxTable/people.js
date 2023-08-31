@@ -26,6 +26,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import Avatar from "@material-ui/core/Avatar";
 import TablePagination from "@material-ui/core/TablePagination";
+import AddEvent from "../People/AddEvent";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -253,7 +254,7 @@ export default function People() {
       <div className={classes.root}>
         <Toolbar>
           <div edge="start" className={classes.grow} />
-          <PeopleDialog
+          {/* <PeopleDialog
             edge="end"
             onSave={() => {
               setSnackOpen("Person added");
@@ -267,6 +268,23 @@ export default function People() {
                 onClick={open}
               >
                 Add Person
+              </Button>
+            )}
+          /> */}
+          <AddEvent
+            edge="end"
+            onSave={() => {
+              setSnackOpen("Person added");
+            }}
+            render={(open) => (
+              <Button
+                edge="end"
+                color="primary"
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={open}
+              >
+                Add Event
               </Button>
             )}
           />
