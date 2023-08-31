@@ -15,7 +15,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import { useState } from "react";
-import { updateProfile } from "../api/Api";
+import { updateProfile, userPic } from "../api/Api";
 
 
 export default function PeopleDialog({ data, render, onSave }) {
@@ -36,9 +36,9 @@ export default function PeopleDialog({ data, render, onSave }) {
     blood_grp: "",
     diksha_dt: "",
     occupation: "",
-    user_pic: "",
+    file: "",
     qualification: "",
-    address_line: "",
+    address_linep: "",
     state: "",
     pincode: ""
   });
@@ -81,8 +81,8 @@ export default function PeopleDialog({ data, render, onSave }) {
       newErrors.qualification = "Enter Qualification";
     }
 
-    if (!formData.address_line) {
-      newErrors.address_line = "Enter proper Address";
+    if (!formData.address_linep) {
+      newErrors.address_linep = "Enter proper Address";
     }
 
     if (!formData.state) {
@@ -108,21 +108,23 @@ export default function PeopleDialog({ data, render, onSave }) {
   //Handling Onchange
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+    console.log(name,value,)
+
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: name === 'file' ?event.target.files[0]: value,
     }));
   };
 
   //On submit
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
-    
+    const form = new FormData();
+    Object.keys(formData).forEach(data => form.append(data,formData[data]))
     try {
-      if (validateFields()) {
-        updateProfile(formData)
-    }}
+        // updateProfile(formData)    
+        userPic(formData)    
+      }
     catch (error) {
       console.error('Error:', error);
     }
@@ -252,10 +254,10 @@ export default function PeopleDialog({ data, render, onSave }) {
           <TextField
             variant="outlined"
             margin="dense"
-            label="Image URL"
+            type="file"
             fullWidth
-            name="user_pic"
-            value={formData.user_pic}
+            name="file"
+            // value={formData.file}
             onChange={handleInputChange}
           />
 
@@ -279,16 +281,16 @@ export default function PeopleDialog({ data, render, onSave }) {
       <TextField
         label="Address Line"
         type="text"
-        name="address_line"
-        value={formData.address_line}
+        name="address_linep"
+        value={formData.address_linep}
         onChange={handleInputChange}
         variant="outlined"
         fullWidth
         margin="normal"
         required
         onBlur={handleBlur}
-        error={Boolean(errors.address_line)}
-        helperText={errors.address_line}
+        error={Boolean(errors.address_linep)}
+        helperText={errors.address_linep}
       />
 
 <FormLabel>Enter State</FormLabel>
@@ -330,9 +332,6 @@ export default function PeopleDialog({ data, render, onSave }) {
           </Button>
           </form>
         </DialogContent>
-        <DialogActions>
-       
-        </DialogActions>
       </Dialog>
       
     </>

@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import FormLabel from '@material-ui/core/FormLabel';
 import { login } from "./api/Api";
+import { useHistory } from "react-router-dom";
 
 
 function Copyright() {
@@ -71,6 +72,8 @@ export default function SignIn({ loggedIn, logout }) {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
+  const history = useHistory();
+
   //Validate-Email
     const validateEmail = (value) => {
      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -95,6 +98,10 @@ export default function SignIn({ loggedIn, logout }) {
     }
   };
 
+  function Profile() {
+    // history.push('/profile')
+  }
+
   //ON-SUBMIT
   const onSubmitHandler = async(e) =>{
     e.preventDefault()
@@ -108,7 +115,13 @@ export default function SignIn({ loggedIn, logout }) {
         setContactType('');
      }
 
-     login(email,password)
+     try {    
+      console.log("hikyu") 
+      login(email,password)
+     }
+     catch (error) {
+      console.error('Error:', error);
+    }
 }
     const classes = useStyles();
  
@@ -173,6 +186,7 @@ export default function SignIn({ loggedIn, logout }) {
                   autoComplete="current-password"
                 />
                 <Button
+                onClick={Profile}
                   fullWidth
                   variant="contained"
                   color="primary"

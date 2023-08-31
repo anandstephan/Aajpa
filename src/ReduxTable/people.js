@@ -343,7 +343,7 @@ export default function People() {
                               ) {
                                 return;
                               }
-                              history.push(`/people/${row.id}`);
+                              // history.push(`/people/${row.id}`);
                             }}
                             key={`person-${row.id}`}
                             selected={isItemSelected}
