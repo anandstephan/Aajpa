@@ -116,6 +116,7 @@ export default function AddEvent({ data, render, onSave }) {
       }
     catch (error) {
       console.error('Error:', error);
+      console.log("Form submission failed");
     }
   };
 
