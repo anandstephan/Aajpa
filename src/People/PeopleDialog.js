@@ -120,6 +120,7 @@ export default function PeopleDialog({ data, render, onSave }) {
     event.preventDefault();
     const form = new FormData();
     Object.keys(formData).forEach(data => form.append(data,formData[data]))
+    console.log(formData,form)
     try {
         userPic(form)
       }

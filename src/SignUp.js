@@ -83,9 +83,6 @@ export default function SignUp({ loggedIn, logout, login }) {
 
   const [errors, setErrors] = useState({});
 
-
-
-
   //Validating Fields
   const validateFields = () => {
     const newErrors = {};
@@ -147,8 +144,13 @@ export default function SignUp({ loggedIn, logout, login }) {
   //ON-SUBMIT
   const onSubmitHandler = async(e) =>{
     e.preventDefault()
-
+    // console.log(formData)
+    try {
     signup(formData)
+    }
+    catch(error){
+      console.log("Error",error)
+    }
     }
     const classes = useStyles();
 

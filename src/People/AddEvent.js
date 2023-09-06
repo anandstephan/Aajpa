@@ -1,4 +1,4 @@
-//Signup For Each member
+//Add Events 
 import React from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -8,7 +8,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { useDispatch } from "react-redux";
 import FormLabel from '@material-ui/core/FormLabel';
 import { useState } from "react";
-import { events } from "../api/Api";
+import { eventD, events, getEventImg } from "../api/Api";
+import { useEffect } from "react";
+import { BASE_URL } from "../constants/baseUrl";
 
 
 export default function AddEvent({ data, render, onSave }) {
@@ -23,16 +25,17 @@ export default function AddEvent({ data, render, onSave }) {
   
   //USESTATE
   const [formData, setFormData] = useState({
-    event_name: "",
+  event_name: "",
 	event_type: "",
 	event_location: "",
 	start_date: "",
 	end_date: "",
 	listed_by: "",
 	event_status: "",
-	other:""
+	file:""
   });
 
+  const [imageUrl,setImageUrl] = useState('')
 //   const [errors, setErrors] = useState({});
 
 //   //Validating Fields
@@ -95,24 +98,53 @@ export default function AddEvent({ data, render, onSave }) {
 //     validateFields(); 
 //   };
 
+
   //Handling Onchange
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    // console.log(name,value)
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
+
+  useEffect(()=>{
+    async function getImg(){
+      const generateBlobData = () => {
+        const text = 'Hello, this is a Blob!';
+        return new Blob([text], { type: 'image/jpeg' });
+      };
+      
+      let blob = generateBlobData()
+      let blobUrl = URL.createObjectURL(blob)
+      console.log(blobUrl)
+      setImageUrl(blobUrl)
+    }
+
+  },[])
+
+
+  const handleImageInput = (e) =>{
+      const Image = new FormData()
+      Image.append("event_id",2)
+      Image.append("file",e.target.files[0])
+
+  try {
+    eventD(Image)    
+  } catch (error) {
+      console.log("Error",error)
+  }
+
+  }
+
   //On submit
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
-        // console.log(formData)
-        await events(formData); // Using "await" to wait for the promise to resolve
-        console.log("Form submitted successfully");
+        
+         events(formData); 
+        
       }
     catch (error) {
       console.error('Error:', error);
@@ -143,7 +175,12 @@ export default function AddEvent({ data, render, onSave }) {
         <DialogContent>
           
   <form onSubmit={handleSubmit}>
-
+      <img
+      src={BASE_URL+"images/muku@gmail.com.jpg"}
+      alt="Image"
+      />
+      {console.log("ImageUrl",imageUrl.replace("blob:",""))}
+      
        <FormLabel>Event Name</FormLabel><br/>
           <TextField 
                variant="outlined"
@@ -153,7 +190,7 @@ export default function AddEvent({ data, render, onSave }) {
                placeholder="Enter Event Name"
                value={formData.event_name}
                onChange={handleInputChange}              
-            //    onBlur={handleBlur}
+             //    onBlur={handleBlur}
             //    error={Boolean(errors.age)}
             //   helperText={errors.age}
           />  <br/><br/>
@@ -246,18 +283,15 @@ export default function AddEvent({ data, render, onSave }) {
 
 <FormLabel>Other</FormLabel>
       <TextField
-        label="other"
-        type="text"
-        name="other"
-        value={formData.other}
-        onChange={handleInputChange}
+        type="file"
+        onChange={handleImageInput}
         variant="outlined"
         fullWidth
         margin="normal"      
-        // onBlur={handleBlur}
-        // error={Boolean(errors.qualification)}
+        //   onBlur={handleBlur}
+        //  error={Boolean(errors.qualification)}
         // helperText={errors.qualification}
-      />
+      />  <br/><br/>
 
          <Button type="submit" variant="contained" color="primary" >
             Save
